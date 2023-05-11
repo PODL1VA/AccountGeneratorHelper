@@ -176,7 +176,7 @@ class Proxies:
                 continue
             proxies = r.text.split('\n')
             self.__logger.debug('{} parsed {} {} proxy'.format(url, len(proxies), proxy_type.name))
-            result_proxies = {Proxy(proxy_type, *item.strip().split(':'), None) for item in proxies if item.strip()}
+            result_proxies = {Proxy(proxy_type, *re.search(r"\b\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}:\d+\b", item).group().split(':'), None) for item in proxies if item.strip()}
             with self.__lock:
                 self.__proxies = self.__proxies.union(result_proxies)
 
